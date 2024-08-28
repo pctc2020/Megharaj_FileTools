@@ -1,28 +1,27 @@
 package megharaj.intelora.main;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.pdf.password.ReadEncryptedPdf;
-import com.util.PassConstant;
-import com.zip.password.ReadEncryptedZip;
+import megharaj.intelora.pdf.password.ReadEncryptedPdf;
+import megharaj.intelora.util.PassConstant;
+
 
 public class StartDecryptThreads {
 	public static boolean searchPasswoard = true;
 
 	public static void main(String[] args) {
-		char set1[] = "ABCDEFGHIKMNOPRUVXYabcdefghijmnopruvwy0123456789@_&$%!".toCharArray();
-		int passMaxLength = 15;
-		String prefix = "";
-		int n = set1.length;
+		// char set1[] = "ABCDEFGHIKMNOPRUVXYabcdefghijmnopruvwy0123456789@_&$%!".toCharArray();
+		// int passMaxLength = 15;
+		// String prefix = "";
+		// int n = set1.length;
 		// Basic possible
 		File files[] = new File("D:\\Password PDF\\").listFiles();
 		for (File file : files) {
 			String fileName = file.getAbsolutePath();
 			System.out.println(fileName);
-			new ReadEncryptedPdf(PassConstant.constTestStr, fileName, "TR_00" + threadid).start();
+			// new ReadEncryptedPdf(PassConstant.constTestStr, fileName, "TR_00" + threadid).start();
 			//new ReadEncryptedZip(PassConstant.constTestStr, fileName, "TR_00" + threadid).start();
 			// for(int i=0; i<passMaxLength; i++){
 			// printAllKLengthRec(fileName, set1, prefix, n, i);
@@ -33,7 +32,7 @@ public class StartDecryptThreads {
 		executor.shutdown();
 	}
 
-	static ArrayList<String> list = new ArrayList<String>();
+/*	static ArrayList<String> list = new ArrayList<String>();
 	static void printAllKLengthRec(String fileName, char[] set, String prefix, int n, int k) {
 		if (!searchPasswoard) {
 			return;
@@ -58,17 +57,12 @@ public class StartDecryptThreads {
 			// we have added a new character
 			printAllKLengthRec(fileName, set, newPrefix, n, k - 1);
 		}
-	}
+	} */
 
 	static int threadid = 1;
-	static ExecutorService executor = Executors.newFixedThreadPool(25);
-
+	static ExecutorService executor = Executors.newFixedThreadPool(20);
 	public static void sendListToThread(String fileName) {
-		String strSet1[] = list.toArray(new String[0]);
-		System.out.println(list);
-		
-		executor.execute(new ReadEncryptedPdf(strSet1, fileName, "TR_00" + threadid));
-		list = new ArrayList<String>();
+		executor.execute(new ReadEncryptedPdf(PassConstant.constTestStr, fileName, "TR_00" + threadid));
 		System.out.println(threadid);
 		threadid++;
 	}

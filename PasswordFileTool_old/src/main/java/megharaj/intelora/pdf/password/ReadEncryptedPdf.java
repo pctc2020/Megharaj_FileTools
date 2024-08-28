@@ -6,9 +6,7 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
-
-import megharaj.intelora.main.StartDecryptThreads;
-
+import com.main.StartDecryptThreads;
 
 public class ReadEncryptedPdf extends Thread {
 	String passwords[];
@@ -20,7 +18,6 @@ public class ReadEncryptedPdf extends Thread {
 		threadid = tid;
 		fileName = flName;
 	}
-	
 	public void run() {
 		for (String password : passwords) {
 			if(totalHit%50==0)
@@ -32,7 +29,7 @@ public class ReadEncryptedPdf extends Thread {
 				try {
 					byte[] ownerPassword = password.getBytes();
 					PdfReader pdfReader = new PdfReader(fileName, ownerPassword);
-
+					pdfReader.pass
 					System.out.println("FileName" + fileName);
 					System.out.println("Is the PDF Encrypted " + pdfReader.isEncrypted() + " password was: " + password+"\n\n");
 					System.out.println("File is opened with full permissions : " + pdfReader.isOpenedWithFullPermissions());
@@ -46,6 +43,8 @@ public class ReadEncryptedPdf extends Thread {
 //			            strategy = parser.processContent(i, new SimpleTextExtractionStrategy());
 			            System.out.println(textFromPage);
 			        }
+					
+					
 					pdfReader.close();
 					StartDecryptThreads.searchPasswoard=false;
 				} catch (IOException e) {
@@ -54,6 +53,7 @@ public class ReadEncryptedPdf extends Thread {
 			} else {
 				break;
 			}
+
 		}
 //		System.out.println("Finish thread="+threadid);
 	}

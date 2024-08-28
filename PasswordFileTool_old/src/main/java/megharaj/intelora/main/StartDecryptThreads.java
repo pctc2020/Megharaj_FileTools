@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import megharaj.intelora.pdf.password.ReadEncryptedPdf;
+import megharaj.intelora.util.PassConstant;
 
-public class StartDecryptThreads_logic2 {
+
+public class StartDecryptThreads {
 	public static boolean searchPasswoard = true;
 
 	public static void main(String[] args) {
@@ -15,16 +18,15 @@ public class StartDecryptThreads_logic2 {
 		String prefix = "";
 		int n = set1.length;
 		// Basic possible
-		File files[] = new File("currpted file 9955.pdf").listFiles();
-		//for (File file : files) 
-		{
-			String fileName = "currpted file 9955.pdf"; //file.getAbsolutePath();
+		File files[] = new File("D:\\Password PDF\\").listFiles();
+		for (File file : files) {
+			String fileName = file.getAbsolutePath();
 			System.out.println(fileName);
-			//new ReadEncryptedPdf(PassConstant.constTestStr, fileName, "TR_00" + threadid).start();
+			new ReadEncryptedPdf(PassConstant.constTestStr, fileName, "TR_00" + threadid).start();
 			//new ReadEncryptedZip(PassConstant.constTestStr, fileName, "TR_00" + threadid).start();
-			 for(int i=0; i<passMaxLength; i++){
-				 printAllKLengthRec(fileName, set1, prefix, n, 12);
-			 }
+			// for(int i=0; i<passMaxLength; i++){
+			// printAllKLengthRec(fileName, set1, prefix, n, i);
+			// }
 			sendListToThread(fileName);
 		}
 		System.out.println("Total Thread Need=" + threadid);
@@ -49,28 +51,13 @@ public class StartDecryptThreads_logic2 {
 		// One by one add all characters
 		// from set and recursively
 		// call for k equals to k-1
-		for (int i = 0; i < n; ++i) {
+		for (int i = 5; i < n; ++i) {
 			// Next character of input added
-			if(notRepeatCharXTimes(prefix, set[i], 3)) {
-				String newPrefix = prefix + set[i];
-				// k is decreased, because
-				// we have added a new character
-				printAllKLengthRec(fileName, set, newPrefix, n, k - 1);
-			}
+			String newPrefix = prefix + set[i];
+			// k is decreased, because
+			// we have added a new character
+			printAllKLengthRec(fileName, set, newPrefix, n, k - 1);
 		}
-	}
-
-	private static boolean notRepeatCharXTimes(String prefix, char c, int x) {
-		boolean flag=true;
-		int repeatCount=0;
-		for(int i=0; i<prefix.length() && repeatCount<=x; i++) {
-			if(prefix.charAt(i)==c) {
-				repeatCount++;
-			}
-		}
-				
-		flag=(repeatCount<=x);
-		return flag;
 	}
 
 	static int threadid = 1;
@@ -79,8 +66,8 @@ public class StartDecryptThreads_logic2 {
 	public static void sendListToThread(String fileName) {
 		String strSet1[] = list.toArray(new String[0]);
 		System.out.println(list);
-
-		//executor.execute(new ReadEncryptedPdf(strSet1, fileName, "TR_00" + threadid));
+		
+		executor.execute(new ReadEncryptedPdf(strSet1, fileName, "TR_00" + threadid));
 		list = new ArrayList<String>();
 		System.out.println(threadid);
 		threadid++;
